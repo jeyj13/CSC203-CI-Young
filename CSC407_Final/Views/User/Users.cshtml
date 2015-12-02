@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CSC407_Final.Models.User>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @if(Roles.IsUserInRole("administrator"))
+            {
+                if(item.Admin == false)
+                { 
+            @Html.ActionLink("Make Admin", "ElevateUser", new { id=item.Username }) <span>|</span>
+                @Html.ActionLink("Delete User", "DeleteUser", new { id = item.Username })
+                }
+                else { 
+            @Html.ActionLink("Demote", "DemoteUser", new { id = item.Username })    <span>|</span>
+            @Html.ActionLink("Delete User", "DeleteUser", new { id=item.Username })
+            }
+            }
+        </td>
+    </tr>
+}
+
+</table>

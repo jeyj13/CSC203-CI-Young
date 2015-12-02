@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CSC407_Final.Models.Thread>
+
+@{
+    ViewBag.Title = "Thread List";
+}
+
+<h2>Thread List</h2>
+@if (Request.IsAuthenticated)
+{
+
+    <p>
+        @using (Html.BeginForm())
+        {
+        <p>
+            Search by Title: @Html.TextBox("search") <br />
+            <input type="submit" value="Filter" class="btn btn-danger" />
+        </p>
+        } 
+        
+        
+
+        
+    </p>
+<p>
+    @Html.ActionLink("Create New", "CreateThread")
+</p>
+}
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.postDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.postText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.username)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+         
+        <td>
+            @Html.DisplayFor(modelItem => item.postDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.postText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.username)
+        </td>
+        <td>
+@if (Request.IsAuthenticated && item.username.ToLower() == HttpContext.Current.User.Identity.Name.ToLower() || Roles.IsUserInRole("administrator"))
+{
+    
+            @Html.ActionLink("Edit", "EditThread", new { id=item.threadId }) 
+    <span>|</span>
+}
+else{
+     }
+                                                                       
+
+            <a href="/Comment/Comments/@item.threadId"> Details </a>
+    
+
+
+@if (Request.IsAuthenticated && item.username.ToLower() == HttpContext.Current.User.Identity.Name.ToLower() || Roles.IsUserInRole("administrator"))
+{
+    <span>|</span>
+    
+            @Html.ActionLink("Delete", "DeleteThread", new { id=item.threadId })
+}
+else
+{
+    
+}
+
+
+        </td>
+    </tr>
+
+}
+
+</table>

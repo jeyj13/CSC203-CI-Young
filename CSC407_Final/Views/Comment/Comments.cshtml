@@ -1,0 +1,42 @@
+﻿@model CSC407_Final.ViewModels.CommentViewModel
+
+@{
+    ViewBag.Title = "Comments";
+}
+
+
+<div>
+
+    <hr />
+    <p>@Model.Thread.username posted:</p>
+    <h3>@Model.Thread.postText</h3>
+    <p>@Model.Thread.postDate </p>
+
+
+@if (Request.IsAuthenticated)
+{
+    @Html.ActionLink("Create", "CreateComment", Model.Thread)
+}
+    @foreach (var comment in Model.Comments)
+    {
+        if(comment.threadId == Model.Thread.threadId)
+        { 
+
+        <div>@comment.username posted:</div>
+        <div>@comment.comment</div>
+         <div>@comment.timestamp</div>
+        
+        <div>__________________________________________________________________________________</div>
+    
+    
+
+    if (Request.IsAuthenticated && comment.username.ToLower() == HttpContext.Current.User.Identity.Name.ToLower() || Roles.IsUserInRole("administrator"))
+    {
+        @Html.ActionLink("Delete", "DeleteComment", new { id=comment.threadId }) <span>|</span>
+    }
+    }
+
+    }
+
+</div>
+
